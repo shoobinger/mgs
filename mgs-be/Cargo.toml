@@ -1,0 +1,16 @@
+[package]
+name = "mgs"
+version = "0.1.0"
+authors = ["suive <is@suive.name>"]
+edition = "2018"
+
+[workspace]
+members = [
+    "mgs_back",
+    "mgs_api",
+    "mgs_common"
+]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"

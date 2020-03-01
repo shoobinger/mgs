@@ -1,0 +1,11 @@
+[package]
+name = "mgs_back"
+version = "0.1.0"
+authors = ["suive <is@suive.name>"]
+edition = "2018"
+
+[dependencies]
+mgs_common = { path = "../mgs_common" }
+diesel = { version = "1.4.3", features = ["sqlite", "chrono"] }
+dotenv = "0.9.0"
+chrono = "0.4"
