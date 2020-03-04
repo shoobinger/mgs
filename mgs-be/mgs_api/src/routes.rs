@@ -20,6 +20,8 @@ pub fn get_assets() -> Response {
     let conn = establish_connection();
     let assets = Asset::read_all(1, &conn).expect("Can't read assets");
 
+    println!("{}", assets.len());
+
     Response {
         body: Json(
             assets.into_iter().map(|a| AssetRepr {

@@ -1,24 +1,24 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import AssetsPage from "../views/AssetsPage.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
+    name: "Dashboard",
+    component: () =>
+      import(/* webpackChunkName: "dashboard" */ "../views/DashboardPage.vue")
+  },
+  {
+    path: "/assets",
     name: "Assets",
-    component: AssetsPage
-  }
-  /* {
-    path: "/about",
-    name: "About",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => */
-  //    import(/* webpackChunkName: "about" */ "../views/About.vue")
-  // }
+    component: () =>
+      import(/* webpackChunkName: "assets" */ "../views/AssetsPage.vue")
+  }
 ];
 
 const router = new VueRouter({

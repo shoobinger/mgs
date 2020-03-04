@@ -1,30 +1,58 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Assets</router-link>
+  <div
+    class="is-flex has-direction-column is-viewport-height"
+    id="main-container"
+  >
+    <nav class="navbar" role="navigation">
+      <div class="navbar-brand">
+        <router-link class="navbar-item" to="/">MGS</router-link>
+      </div>
+    </nav>
+    <div class="columns is-fullheight" id="app">
+      <div class="column is-2 is-hidden-mobile">
+        <Menu />
+      </div>
+      <div class="column is-main-content">
+        <router-view />
+      </div>
     </div>
-    <router-view />
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script lang="ts">
+import Menu from "@/components/Menu.vue";
+
+export default {
+  name: "App",
+  components: {
+    Menu
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.is-viewport-height {
+  height: 100vh;
 }
 
-#nav {
-  padding: 30px;
+.has-direction-column {
+  flex-direction: column;
+}
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+.align-content-stretch {
+  align-content: stretch;
+}
 
-    &.router-link-exact-active {
-      color: #42b983;
+.is-sidebar-menu {
+  padding: 1rem;
+}
+
+.columns {
+  &.is-fullheight {
+    flex: 1;
+
+    .column {
+      overflow-y: auto;
     }
   }
 }
