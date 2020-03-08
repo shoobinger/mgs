@@ -6,6 +6,6 @@ use rocket::{self, routes};
 mod routes;
 mod models;
 
-fn main() {
+pub fn start() {
     rocket::ignite().mount("/", routes![routes::get_assets]).launch();
 }

@@ -13,3 +13,8 @@ CREATE TABLE asset_snapshots (
     date DATE NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+INSERT INTO assets (user_id, name) VALUES
+    (1, "USD"),
+    (2, "FXIT"),
+    (3, "BTC");
