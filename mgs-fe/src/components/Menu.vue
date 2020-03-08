@@ -7,7 +7,7 @@
       <li>
         <a
           v-on:click="navigate('/')"
-          v-bind:class="{ active: location == '/' }"
+          v-bind:class="{ 'is-active': currentLocation == '/' }"
         >
           Dashboard</a
         >
@@ -15,7 +15,7 @@
       <li>
         <a
           v-on:click="navigate('/assets')"
-          v-bind:class="{ active: location == '/assets' }"
+          v-bind:class="{ 'is-active': currentLocation == '/assets' }"
           >Assets</a
         >
       </li>
@@ -29,12 +29,14 @@ import store from "@/store";
 
 export default Vue.extend({
   methods: {
-    navigate: function(location: string) {
-      store.dispatch("navigate", { router: this.$router, location });
+    navigate(location: string) {
+      if (location != this.currentLocation) {
+        store.dispatch("navigate", { router: this.$router, location });
+      }
     }
   },
   computed: {
-    location: function() {
+    currentLocation() {
       return store.state.location;
     }
   }

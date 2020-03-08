@@ -21,13 +21,19 @@
 
 <script lang="ts">
 import Menu from "@/components/Menu.vue";
+import Vue from "vue";
 
-export default {
+export default Vue.extend({
   name: "App",
   components: {
     Menu
+  },
+  created() {
+    //TODO using window here because it's not clear why $router contains "/" instead of actual location
+    //occurs when using Webpack lazy-loading
+    this.$store.dispatch("setInitialPath", window.location.pathname);
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -17,10 +17,11 @@ pub struct Response {
 }
 
 #[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Page {
     elements: Vec<AssetRepr>,
     limit: i32,
-    offset: i32,
+    offset: i32
 }
 
 const DEFAULT_LIMIT: i32 = 20;
@@ -38,15 +39,10 @@ pub fn get_assets(limit: Option<i32>, offset: Option<i32>) -> Response {
         created_at: a.created_at.timestamp_millis(),
         enabled: a.enabled,
         name: a.name,
-        user_id: a.user_id,
     }).collect();
 
     Response {
-        body: Json(Page {
-            elements,
-            limit,
-            offset
-        }),
+        body: Json(Page { elements, limit, offset }),
         header: Header::new("Access-Control-Allow-Origin", "*"),
     }
 }
