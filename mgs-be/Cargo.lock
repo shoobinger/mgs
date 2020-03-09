@@ -409,6 +409,7 @@ name = "mgs_api"
 version = "0.1.0"
 dependencies = [
  "mgs_back",
+ "mgs_common",
  "rocket",
  "rocket_contrib",
  "serde",

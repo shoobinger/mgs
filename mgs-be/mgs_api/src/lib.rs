@@ -7,5 +7,8 @@ mod routes;
 mod models;
 
 pub fn start() {
-    rocket::ignite().mount("/", routes![routes::get_assets]).launch();
+    rocket::ignite().mount("/", routes![
+            routes::get_assets,
+            routes::add_asset
+    ]).launch();
 }

@@ -18,12 +18,14 @@ class Pagination {
 interface State {
   location: RawLocation;
   assets: Array<AssetModel>;
+  loading: boolean;
   pagination: Pagination;
 }
 
 const initialState: State = {
   location: "/",
   assets: Array<AssetModel>(),
+  loading: false,
   pagination: new Pagination(0, 0, false)
 };
 
@@ -57,6 +59,9 @@ export default new Vuex.Store<State>({
     unloadAssets(state) {
       state.assets = [];
       state.pagination = new Pagination(0, 0, false);
+    },
+    setLoading(state, loading: boolean) {
+      state.loading = loading;
     }
   },
   actions: {
@@ -68,11 +73,22 @@ export default new Vuex.Store<State>({
       payload.router.push(payload.location);
     },
     loadAssets({ commit }, offset: number) {
+      commit("setLoading", true);
+
       Axios.request<Page<AssetModel>>({
-        url: `http://localhost:8000/assets?offset=${offset}&limit=1`
-      }).then(data => {
-        commit("loadAssets", data.data);
-      });
+        url: `http://localhost:8000/assets?offset=${offset}&limit=2`
+      })
+        .then(
+          data => {
+            commit("loadAssets", data.data);
+          },
+          reason => {
+            commit("setError", "error occurred"); //TODO handle error
+          }
+        )
+        .finally(() => {
+          commit("setLoading", false);
+        });
     },
     unloadAssets({ commit }) {
       commit("unloadAssets");

@@ -1,26 +1,23 @@
 <template>
   <div class="container is-widescreen">
-    <table class="table is-fullwidth">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Added</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="asset in assets" :key="asset.id">
-          <td>{{ asset.id }}</td>
-          <td>{{ asset.name }}</td>
-          <td>{{ asset.description }}</td>
-          <td>{{ asset.createdAt }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="level">
+      <div class="level-left">
+        <button class="button is-light level-item">
+          Add asset
+        </button>
+      </div>
+    </div>
+    <div v-for="asset in assets" :key="asset.id" class="level">
+      <div class="level-left">
+        <div class="level-item"><AssetType v-bind:id="asset.type" /></div>
+        <div class="level-item">{{ asset.name }}</div>
+        <div class="level-item">{{ asset.description }}</div>
+      </div>
+    </div>
     <button
       class="button is-light is-fullwidth"
       v-if="hasMore"
+      v-bind:class="{ 'is-loading': loading }"
       v-on:click="loadNext"
     >
       Load more
@@ -32,8 +29,10 @@
 import Vue from "vue";
 import dayjs from "dayjs";
 import store from "@/store";
+import AssetType from "@/components/AssetType.vue";
 
 export default Vue.extend({
+  components: { AssetType },
   methods: {
     loadNext: function() {
       this.$store.dispatch("loadAssets", this.nextOffset);
@@ -56,6 +55,9 @@ export default Vue.extend({
     },
     hasMore() {
       return this.$store.state.pagination.hasMore;
+    },
+    loading() {
+      return this.$store.state.loading;
     },
     nextOffset() {
       return (
