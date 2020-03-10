@@ -433,6 +433,7 @@ dependencies = [
 name = "mgs_common"
 version = "0.1.0"
 dependencies = [
+ "rusqlite",
  "serde",
  "serde_json",
 ]

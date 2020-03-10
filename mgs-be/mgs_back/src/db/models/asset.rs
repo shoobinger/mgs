@@ -3,7 +3,7 @@ use rusqlite::{params, named_params, Connection, Error};
 use std::io;
 use std::io::Write;
 use crate::conn;
-use mgs_common::AddAsset;
+use mgs_common::{AddAsset, AssetType};
 use std::ops::Deref;
 use rusqlite::types::{FromSql, FromSqlError, ValueRef};
 
@@ -36,7 +36,7 @@ impl FromSql for Amount {
 pub struct Asset {
     pub id: i32,
     pub user_id: i32,
-    pub asset_type: i8,
+    pub asset_type: AssetType,
     pub name: String,
     pub description: Option<String>,
     pub created_at: NaiveDateTime,

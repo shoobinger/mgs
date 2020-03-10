@@ -1,9 +1,10 @@
 import Vue from "vue";
-import VueRouter from "vue-router";
+import VueRouter, { RouteConfig } from "vue-router";
+import AssetsPage from "@/views/AssetsPage.vue";
 
 Vue.use(VueRouter);
 
-const routes = [
+const routes: RouteConfig[] = [
   {
     path: "/",
     name: "Dashboard",
@@ -12,12 +13,23 @@ const routes = [
   },
   {
     path: "/assets",
-    name: "Assets",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "assets" */ "../views/AssetsPage.vue")
+    component: AssetsPage,
+    children: [
+      {
+        path: "",
+        name: "Assets",
+        component: () =>
+          import(/* webpackChunkName: "assets" */ "../components/Assets.vue")
+      },
+      {
+        path: "add",
+        name: "Add a new asset",
+        component: () =>
+          import(
+            /* webpackChunkName: "add_asset" */ "../components/AddAsset.vue"
+          )
+      }
+    ]
   }
 ];
 

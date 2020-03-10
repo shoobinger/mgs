@@ -76,7 +76,7 @@ export default new Vuex.Store<State>({
       commit("setLoading", true);
 
       Axios.request<Page<AssetModel>>({
-        url: `http://localhost:8000/assets?offset=${offset}&limit=2`
+        url: `http://localhost/api/assets?offset=${offset}`
       })
         .then(
           data => {
@@ -92,6 +92,13 @@ export default new Vuex.Store<State>({
     },
     unloadAssets({ commit }) {
       commit("unloadAssets");
+    },
+    addAsset({ commit }, asset) {
+      Axios.request<AssetModel>({
+        url: `http://localhost/api/assets`,
+        method: "POST",
+        data: asset
+      });
     }
   },
   modules: {}

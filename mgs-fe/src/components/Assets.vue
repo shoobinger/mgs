@@ -2,16 +2,22 @@
   <div class="container is-widescreen">
     <div class="level">
       <div class="level-left">
-        <button class="button is-light level-item">
+        <button class="button is-light level-item" v-on:click="addAsset">
           Add asset
         </button>
       </div>
     </div>
     <div v-for="asset in assets" :key="asset.id" class="level">
       <div class="level-left">
-        <div class="level-item"><AssetType v-bind:id="asset.type" /></div>
-        <div class="level-item">{{ asset.name }}</div>
-        <div class="level-item">{{ asset.description }}</div>
+        <div class="level-item is-size-5">{{ asset.name }}</div>
+        <div class="level-item is-size-6" v-if="asset.description">
+          {{ asset.description }}
+        </div>
+        <div class="level-item"><AssetType v-bind:name="asset.type" /></div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">{{ asset.quantity }}</div>
+        <div class="level-item">{{ asset.value }}</div>
       </div>
     </div>
     <button
@@ -34,8 +40,14 @@ import AssetType from "@/components/AssetType.vue";
 export default Vue.extend({
   components: { AssetType },
   methods: {
-    loadNext: function() {
+    loadNext() {
       this.$store.dispatch("loadAssets", this.nextOffset);
+    },
+    addAsset() {
+      this.$store.dispatch("navigate", {
+        router: this.$router,
+        location: "/assets/add"
+      });
     }
   },
   created() {
