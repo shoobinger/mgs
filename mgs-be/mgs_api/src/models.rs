@@ -28,3 +28,23 @@ impl From<Asset> for AssetRepr {
         }
     }
 }
+
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct StorageRepr {
+    pub name: String,
+}
+
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct AssetPartRepr {
+    pub storage: StorageRepr,
+    pub quantity: f64
+}
+
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct AssetDetailsRepr {
+    pub asset: AssetRepr,
+    pub parts: Vec<AssetPartRepr>
+}

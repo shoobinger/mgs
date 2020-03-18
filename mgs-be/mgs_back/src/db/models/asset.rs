@@ -6,6 +6,7 @@ use crate::conn;
 use mgs_common::{AddAsset, AssetType};
 use std::ops::Deref;
 use rusqlite::types::{FromSql, FromSqlError, ValueRef};
+use std::collections::HashMap;
 
 #[derive(Debug)]
 pub struct Amount(pub f64);
@@ -41,31 +42,26 @@ pub struct Asset {
     pub description: Option<String>,
     pub created_at: NaiveDateTime,
     pub enabled: bool,
-    pub value: Option<Amount>,
+    pub quantity: Option<Amount>,
 }
 
-#[derive(Debug)]
-pub struct AssetSnapshot {
-    pub id: i32,
-    pub asset_id: i32,
-    pub quantity: i32,
-    pub date: NaiveDate,
-    pub created_at: NaiveDateTime,
-}
 
 impl Asset {
     pub fn read(user_id: i32, currency_id: i16, limit: i32, offset: i32) -> Result<Vec<Self>, String> {
+        let rates: HashMap<&str, f64> = vec![ ("USDRUB", 72.0 ) ].into_iter().collect();
+
         conn().prepare(r#"
-            SELECT a.id, a.user_id, a.type, a.name, a.description, a.created_at, v.value
+            SELECT a.id, a.user_id, a.type, a.name, a.description, a.created_at, m.default_symbol_id, SUM(p.quantity)
             FROM assets a
-            LEFT JOIN snapshot_values v ON v.snapshot_id = a.last_snapshot_id AND v.currency_id=:currency_id
+            LEFT JOIN asset_parts p ON p.asset_id = a.id
+            LEFT JOIN asset_market_info m ON m.asset_id = a.id
             WHERE a.user_id=:user_id AND a.enabled=1
+            GROUP BY a.id
             ORDER BY a.created_at DESC
             LIMIT :limit OFFSET :offset"#
         ).and_then(|mut stmt|
             stmt.query_map_named(named_params! {
              ":user_id": user_id,
-             ":currency_id": currency_id,
              ":limit": limit,
              ":offset": offset
             }, |row| {
@@ -77,7 +73,7 @@ impl Asset {
                     description: row.get(4)?,
                     created_at: row.get(5)?,
                     enabled: true,
-                    value: row.get(6)?,
+                    quantity: row.get(6)?,
                 })
             })?.collect()
         ).map_err(|e| e.to_string())

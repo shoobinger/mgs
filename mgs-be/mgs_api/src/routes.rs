@@ -50,3 +50,7 @@ pub fn add_asset(add_asset: Json<AddAsset>) -> Json<AssetRepr> {
 
     Json(resp)
 }
+
+//pub fn add_asset_part(add_asset_part: Json<AddAssetPart>) -> Json<AssetRepr> {
+//
+//}
